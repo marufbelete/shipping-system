@@ -1,0 +1,36 @@
+
+version: "3"
+services: 
+  node:
+    image: marufdocker/sultan-api
+    ports:
+      - "8000:8000"
+    networks:
+      - docker-service
+    depends_on: 
+      - mariadb
+    restart: always
+
+  mariadb:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    environment: 
+      MARIADB_DATABASE: shops
+      MARIADB_USER: saleh
+      MARIADB_PASSWORD: test
+      MARIADB_ROOT_PASSWORD: test
+
+    networks:
+      - docker-service
+    volumes:
+      - maria-data:/var/lib/mysql
+    restart: always
+
+networks:
+  docker-service:
+    driver: bridge
+
+volumes:
+  maria-data:
+    driver: local
